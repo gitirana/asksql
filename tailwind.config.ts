@@ -10,7 +10,7 @@ const config: Config = {
     extend: {
       fontFamily: {
         sans: ['var(--font-inter)'],
-        mono: ['var(--font-ubuntu)']
+        mono: ['var(--font-ubuntu)'],
       },
       colors: {
         'cotton-candy': {
@@ -25,7 +25,8 @@ const config: Config = {
           800: '#387783',
           900: '#2B5B64',
         },
-        'lemon': {
+        lemon: {
+          8: '#151A2A',
           50: '#eaffe7',
           100: '#e0ffda',
           200: '#beffb3',
@@ -37,7 +38,7 @@ const config: Config = {
           800: '#147305',
           900: '#105904',
         },
-        'gum': {
+        gum: {
           50: '#fff2f9',
           100: '#ffebf6',
           200: '#fed5ed',
@@ -54,8 +55,9 @@ const config: Config = {
         pistachio: '#D3FFCC',
         cream: '#E2DFCD',
         foam: '#D7DAE2',
-        snow: '#FFFFFF'
-      }
+        snow: '#FFFFFF',
+        guava: '#DCFFD6',
+      },
     },
   },
   plugins: [],
