@@ -1,11 +1,32 @@
 import './globals.css'
 import type { Metadata } from 'next'
-import { Inter, Ubuntu_Mono as UbuntuMono } from 'next/font/google'
+import localFont from '@next/font/local'
 
-const inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
-const ubuntuMono = UbuntuMono({
-  subsets: ['latin'],
-  weight: '400',
+const inter = localFont({
+  src: [
+    {
+      path: '../../public/fonts/Inter/Inter-Light.ttf',
+      weight: '300',
+    },
+    {
+      path: '../../public/fonts/Inter/Inter-Regular.ttf',
+      weight: '400',
+    },
+    {
+      path: '../../public/fonts/Inter/Inter-Semibold.ttf',
+      weight: '600',
+    },
+  ],
+  variable: '--font-inter',
+})
+
+const ubuntuMono = localFont({
+  src: [
+    {
+      path: '../../public/fonts/Ubuntu_Mono/UbuntuMono-Regular.ttf',
+      weight: '400',
+    },
+  ],
   variable: '--font-ubuntu',
 })
 
