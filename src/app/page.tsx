@@ -1,8 +1,29 @@
+'use client'
+
 import Image from 'next/image'
-import logo from '../assets/logo.svg'
 import { MoonStar, Trash, Wand2 } from 'lucide-react'
+import Editor from 'react-simple-code-editor'
+import { highlight, languages } from 'prismjs'
+
+import 'prismjs/components/prism-sql'
+import 'prismjs/themes/prism-okaidia.css'
+
+import logo from '../assets/logo.svg'
+import { useState } from 'react'
+import { useCompletion } from 'ai/react'
 
 export default function Home() {
+  const [schema, setSchema] = useState<string>('')
+
+  const { completion, handleSubmit, input, handleInputChange } = useCompletion({
+    api: '/api/generate-sql',
+    body: {
+      schema,
+    },
+  })
+
+  const answer = completion
+
   return (
     <div className="flex flex-col py-8 px-16 gap-14">
       <header className="flex items-center justify-between">
@@ -21,16 +42,25 @@ export default function Home() {
       </header>
 
       <div className="flex flex-col max-w-2xl mx-auto w-full gap-12">
-        <form action="" className="flex flex-col w-full text-foam gap-4">
+        <form
+          action=""
+          onSubmit={handleSubmit}
+          className="flex flex-col w-full text-foam gap-4"
+        >
           <div className="flex flex-col gap-4">
             <label htmlFor="schema" className="font-light text-lg">
               Cole seu código SQL aqui
             </label>
-            <textarea
-              name="schema"
-              id="schema"
-              className="resize-none px-4 py-3 bg-lemon-8 rounded-md border border-guava/20 outline-none focus:ring-2 focus:ring-lemon-500"
-            ></textarea>
+
+            <Editor
+              textareaId="schema"
+              value={schema}
+              onValueChange={(code) => setSchema(code)}
+              highlight={(code) => highlight(code, languages.sql, 'sql')}
+              padding={16}
+              tabSize={2}
+              className="resize-none font-mono h-40 overflow-scroll bg-lemon-8 rounded-md border border-guava/20 outline-none focus-within:ring-2 focus-within:ring-lemon-500"
+            />
           </div>
 
           <div className="flex flex-col gap-4">
@@ -40,6 +70,8 @@ export default function Home() {
             <textarea
               name="question"
               id="question"
+              value={input}
+              onChange={handleInputChange}
               className="resize-none px-4 py-3 bg-lemon-8 rounded-md border border-guava/20 outline-none focus:ring-2 focus:ring-lemon-500"
             ></textarea>
 
@@ -55,10 +87,18 @@ export default function Home() {
 
         <div className="w-full text-foam flex flex-col gap-4">
           <span className="font-light text-lg">Resposta</span>
-          <textarea
+
+          <Editor
+            textareaId="schema"
+            value={answer}
+            // eslint-disable-next-line @typescript-eslint/no-empty-function
+            onValueChange={() => {}}
+            highlight={(code) => highlight(code, languages.sql, 'sql')}
+            padding={16}
+            tabSize={2}
             readOnly
-            className="resize-none px-4 py-3 bg-transparent rounded-md border border-guava/20 outline-none"
-          ></textarea>
+            className="resize-none font-mono h-40 bg-transparent rounded-md border border-guava/20 outline-none"
+          />
         </div>
       </div>
     </div>
