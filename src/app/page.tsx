@@ -1,106 +1,59 @@
 'use client'
-
 import Image from 'next/image'
-import { MoonStar, Trash, Wand2 } from 'lucide-react'
-import Editor from 'react-simple-code-editor'
-import { highlight, languages } from 'prismjs'
-
-import 'prismjs/components/prism-sql'
-import 'prismjs/themes/prism-okaidia.css'
-
 import logo from '../assets/logo.svg'
+import { ArrowRight } from 'lucide-react'
 import { useState } from 'react'
-import { useCompletion } from 'ai/react'
+import Link from 'next/link'
 
 export default function Home() {
-  const [schema, setSchema] = useState<string>('')
-
-  const { completion, handleSubmit, input, handleInputChange } = useCompletion({
-    api: '/api/generate-sql',
-    body: {
-      schema,
-    },
-  })
-
-  const answer = completion
+  const [value, setValue] = useState<string | null>(null)
 
   return (
-    <div className="flex flex-col py-8 px-16 gap-14">
-      <header className="flex items-center justify-between">
-        <div className="w-[40px] h-[40px] bg-snow rounded-full"></div>
+    <div className="flex flex-col py-8 px-16 gap-40">
+      <header className="flex items-center justify-center">
         <Image src={logo} alt="" />
-
-        <div className="flex items-center gap-6">
-          <button type="button">
-            <MoonStar className="text-snow h-6 w-6" />
-          </button>
-
-          <button type="button">
-            <Trash className="text-snow h-6 w-6" />
-          </button>
-        </div>
       </header>
 
-      <div className="flex flex-col max-w-2xl mx-auto w-full gap-12">
-        <form
-          action=""
-          onSubmit={handleSubmit}
-          className="flex flex-col w-full text-foam gap-4"
+      <section className="flex flex-col mx-auto max-w-sm text-foam items-center gap-8 justify-center">
+        <Image
+          src="https://github.com/github.png"
+          alt=""
+          width={100}
+          height={100}
+          className="rounded-full"
+        />
+
+        <span className="font-semibold text-lg">
+          Qual o seu usuário do Github?
+        </span>
+
+        <input
+          type="text"
+          id="user"
+          value={value || ''}
+          onChange={(e) => setValue(e.target.value)}
+          className="w-full rounded-md bg-lemon-8 py-3 px-4 border border-guava/20 outline-none focus-within:ring-2 focus-within:ring-lemon-500"
+        />
+
+        <Link
+          href={{
+            pathname: '/generator',
+            query: {
+              username: value,
+            },
+          }}
+          className="w-full"
         >
-          <div className="flex flex-col gap-4">
-            <label htmlFor="schema" className="font-light text-lg">
-              Cole seu código SQL aqui
-            </label>
-
-            <Editor
-              textareaId="schema"
-              value={schema}
-              onValueChange={(code) => setSchema(code)}
-              highlight={(code) => highlight(code, languages.sql, 'sql')}
-              padding={16}
-              tabSize={2}
-              className="resize-none font-mono h-40 overflow-scroll bg-lemon-8 rounded-md border border-guava/20 outline-none focus-within:ring-2 focus-within:ring-lemon-500"
-            />
-          </div>
-
-          <div className="flex flex-col gap-4">
-            <label htmlFor="question" className="font-light text-lg">
-              Faça uma pergunta sobre o código
-            </label>
-            <textarea
-              name="question"
-              id="question"
-              value={input}
-              onChange={handleInputChange}
-              className="resize-none px-4 py-3 bg-lemon-8 rounded-md border border-guava/20 outline-none focus:ring-2 focus:ring-lemon-500"
-            ></textarea>
-
-            <button
-              type="submit"
-              className="text-pistachio gap-3 flex items-center justify-center rounded-xl border border-pistachio py-3 px-3"
-            >
-              <Wand2 className="h-5 w-5" />
-              Perguntar à inteligência artificial
-            </button>
-          </div>
-        </form>
-
-        <div className="w-full text-foam flex flex-col gap-4">
-          <span className="font-light text-lg">Resposta</span>
-
-          <Editor
-            textareaId="schema"
-            value={answer}
-            // eslint-disable-next-line @typescript-eslint/no-empty-function
-            onValueChange={() => {}}
-            highlight={(code) => highlight(code, languages.sql, 'sql')}
-            padding={16}
-            tabSize={2}
-            readOnly
-            className="resize-none font-mono h-40 bg-transparent rounded-md border border-guava/20 outline-none"
-          />
-        </div>
-      </div>
+          <button
+            type="button"
+            disabled={!value}
+            className="flex items-center gap-3 bg-lemon-700 hover:bg-lemon-600 disabled:bg-lemon-900 w-full justify-center py-2 px-4 rounded-lg"
+          >
+            Acessar
+            <ArrowRight />
+          </button>
+        </Link>
+      </section>
     </div>
   )
 }
