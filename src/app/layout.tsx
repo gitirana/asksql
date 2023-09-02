@@ -13,7 +13,7 @@ const inter = localFont({
       weight: '400',
     },
     {
-      path: '../../public/fonts/Inter/Inter-Semibold.ttf',
+      path: '../../public/fonts/Inter/Inter-SemiBold.ttf',
       weight: '600',
     },
   ],

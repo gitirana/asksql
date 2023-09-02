@@ -1,6 +1,5 @@
 'use client'
 import Image from 'next/image'
-import logo from '../assets/logo.svg'
 import { ArrowRight, MoonStar, Sun } from 'lucide-react'
 import { useState } from 'react'
 import Link from 'next/link'
