@@ -2,17 +2,17 @@
 
 import Image from 'next/image'
 import { MoonStar, Sun, Trash, Wand2 } from 'lucide-react'
-import Editor from 'react-simple-code-editor'
-import { highlight, languages } from 'prismjs'
-
-import 'prismjs/components/prism-sql'
-import 'prismjs/themes/prism-okaidia.css'
 
 import logo from '../../assets/logo.svg'
 import logoLight from '../../assets/logo-light.svg'
 import { useEffect, useState } from 'react'
 import { useCompletion } from 'ai/react'
 import { useSearchParams } from 'next/navigation'
+
+import AceEditor from 'react-ace'
+import 'ace-builds/src-noconflict/mode-sql'
+import 'ace-builds/src-noconflict/theme-gob'
+import 'ace-builds/src-noconflict/ext-language_tools'
 
 export default function Home() {
   const [schema, setSchema] = useState<string>('')
@@ -54,7 +54,7 @@ export default function Home() {
 
   return (
     <div className={theme}>
-      <div className="flex flex-col py-8 px-16 gap-14 bg-slate-300 dark:bg-blueberry min-h-screen">
+      <div className="flex flex-col py-8 max-md:px-6 px-16 gap-14 bg-slate-300 dark:bg-blueberry min-h-screen">
         <header className="flex items-center justify-between ">
           <Image
             src={`https://github.com/${params[0]}.png`}
@@ -95,14 +95,29 @@ export default function Home() {
                 Cole seu código SQL aqui
               </label>
 
-              <Editor
-                textareaId="schema"
+              <AceEditor
+                height="160px"
+                width="100%"
                 value={schema}
-                onValueChange={(code) => setSchema(code)}
-                highlight={(code) => highlight(code, languages.sql, 'sql')}
-                padding={16}
-                tabSize={2}
-                className="resize-none font-mono h-40 overflow-scroll text-foam bg-lemon-8 rounded-md border border-guava/20 outline-none focus-within:ring-2 focus-within:ring-lemon-500"
+                onChange={(code) => setSchema(code)}
+                mode="sql"
+                theme="gob"
+                fontSize="16px"
+                highlightActiveLine={false}
+                setOptions={{
+                  enableLiveAutocompletion: false,
+                  showLineNumbers: false,
+                  tabSize: 2,
+                  fontSize: 16,
+                  wrap: true,
+                }}
+                onLoad={function (editor) {
+                  editor.renderer.setPadding(16)
+                  editor.renderer.setScrollMargin(16, 16, 16, 16)
+                }}
+                showGutter={false}
+                showPrintMargin={false}
+                className="resize-none font-mono p-4 text-foam bg-lemon-8 rounded-md border border-guava/20 outline-none focus-within:ring-2 focus-within:ring-lemon-500"
               />
             </div>
 
@@ -120,7 +135,7 @@ export default function Home() {
 
               <button
                 type="submit"
-                className="dark:text-pistachio text-blueberry gap-3 flex items-center justify-center rounded-xl border border-blueberry dark:border-pistachio py-3 px-3"
+                className="dark:text-pistachio dark:hover:text-blueberry dark:hover:font-semibold dark:hover:bg-pistachio text-blueberry gap-3 flex items-center justify-center rounded-xl border border-blueberry dark:border-pistachio py-3 px-3"
               >
                 <Wand2 className="h-5 w-5" />
                 Perguntar à inteligência artificial
@@ -131,15 +146,28 @@ export default function Home() {
           <div className="w-full dark:text-foam text-blueberry flex flex-col gap-4">
             <span className="dark:font-light text-lg">Resposta</span>
 
-            <Editor
-              textareaId="schema"
+            <AceEditor
+              readOnly={true}
+              height="160px"
+              width="100%"
               value={isAnswerEmpty ? '' : answer}
-              // eslint-disable-next-line @typescript-eslint/no-empty-function
-              onValueChange={() => {}}
-              highlight={(code) => highlight(code, languages.sql, 'sql')}
-              padding={16}
-              tabSize={2}
-              readOnly
+              mode="sql"
+              theme="gob"
+              fontSize="16px"
+              highlightActiveLine={false}
+              setOptions={{
+                enableLiveAutocompletion: false,
+                showLineNumbers: false,
+                tabSize: 2,
+                fontSize: 16,
+                wrap: true,
+              }}
+              onLoad={function (editor) {
+                editor.renderer.setPadding(16)
+                editor.renderer.setScrollMargin(16, 16, 16, 16)
+              }}
+              showGutter={false}
+              showPrintMargin={false}
               className="resize-none font-mono h-40 bg-lemon-8 text-foam dark:bg-transparent rounded-md border dark:border-guava/20 border-blueberry outline-none"
             />
           </div>

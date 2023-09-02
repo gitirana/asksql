@@ -20,7 +20,7 @@ export default function Home() {
 
   return (
     <div className={theme}>
-      <div className="flex flex-col py-8 px-16 gap-40 bg-slate-300 dark:bg-blueberry min-h-screen">
+      <div className="flex flex-col py-8 max-md:px-6 px-16 gap-40 bg-slate-300 dark:bg-blueberry min-h-screen">
         <header className="flex items-center justify-between">
           <div></div>
 
